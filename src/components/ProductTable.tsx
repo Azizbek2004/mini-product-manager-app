@@ -24,9 +24,11 @@ export function ProductTable({ products, sortField, sortOrder, onSort, onEdit, o
   };
 
   const formatDate = (isoString: string) => {
-    return new Intl.DateTimeFormat('uz-UZ', { 
-      month: 'short', day: 'numeric', year: 'numeric' 
-    }).format(new Date(isoString));
+    const d = new Date(isoString);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}/${mm}/${dd}`;
   };
 
   if (products.length === 0) {
@@ -60,7 +62,7 @@ export function ProductTable({ products, sortField, sortOrder, onSort, onEdit, o
                 <div className="flex items-center gap-2 hover:text-slate-900 transition-colors">Narxi {renderSortIcon('price')}</div>
               </th>
               <th className="px-6 py-5 cursor-pointer group select-none transition-colors hover:bg-slate-100/50" onClick={() => onSort('createdAt')}>
-                <div className="flex items-center gap-2 hover:text-slate-900 transition-colors">Yaratilgan sana {renderSortIcon('createdAt')}</div>
+                <div className="flex items-center gap-2 hover:text-slate-900 transition-colors">Sana {renderSortIcon('createdAt')}</div>
               </th>
               <th className="px-6 py-5 text-right">Amallar</th>
             </tr>
@@ -69,10 +71,9 @@ export function ProductTable({ products, sortField, sortOrder, onSort, onEdit, o
             <AnimatePresence>
               {products.map((product) => (
                 <motion.tr 
-                  layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, transition: { duration: 0.15 } }}
                   key={product.id} 
                   className="hover:bg-slate-50/80 transition-colors group"
                 >
